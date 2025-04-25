@@ -1,7 +1,8 @@
 ## ⚡MHKDF
 A Mutual Head Knowledge Distillation Framework for Lightweight RGB-T Crowd Counting
 
-![image](https://github.com/user-attachments/assets/16aaac0f-8e7a-4fbb-968a-d8dec88cde80)
+![image](https://github.com/user-attachments/assets/c1999cad-fd36-47f3-b2f4-85f2d9c95198)
+
 
 
 ## Trained weights
