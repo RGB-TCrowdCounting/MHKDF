@@ -13,8 +13,8 @@ from torchvision import transform
 
 if __name__ == '__main__':
     net1 = fusion_model_S().cuda()
-    input11 = torch.randn(1, 3, 512, 640).cuda()
-    input22 = torch.randn(1, 3, 512, 640).cuda()
+    input11 = torch.randn(1, 3, 480, 640).cuda()
+    input22 = torch.randn(1, 3, 480, 640).cuda()
     input = [input22, input11]
     flops, params = profile(net1, inputs=(input,  ))
     t_all = []
