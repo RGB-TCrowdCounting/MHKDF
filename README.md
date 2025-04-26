@@ -19,4 +19,4 @@ Trained weights of MHKDF-S on DroneRGBT-CC dataset：https://pan.baidu.com/s/1yV
 Extraction code：mu99
 
 
-## After the manuscript is accepted, the remaining code will be made public.
+##
