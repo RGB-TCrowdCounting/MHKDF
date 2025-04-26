@@ -4,11 +4,11 @@ import os
 
 from utils.tensor_ops import cus_sample, upsample_add
 from utils.DSConv   import DSConv
-from backbone.mix_transformer import (OverlapPatchEmbed, mit_b5,mit_b5_d,mit_b3,mit_b3_d,mit_b0_d,mit_b0,mit_b2_d,mit_b2)
+from backbone.mix_transformer import (mit_b5,mit_b5_d,mit_b3,mit_b3_d,mit_b0_d,mit_b0,mit_b2_d,mit_b2)
 from module.MyModules import (
     MSIM_S,
-    FDM,
-    SDFM,
+    Decoder,
+    MSFHFM_S,
     SFFM,
 )
 import warnings
@@ -68,15 +68,15 @@ class MHKDF_S(nn.Module):
         self.layersD = seg_d
 
 
-        self.trans8 = nn.Conv2d(256, 64, 1)##b3 64,128,320,512#############b0 32, 64, 160, 256########mit_b3
+        self.trans8 = nn.Conv2d(256, 64, 1)##
         self.trans4 = nn.Conv2d(160, 64, 1)
         self.trans2 = nn.Conv2d(64, 64, 1)
         self.trans1 = nn.Conv2d(32, 32, 1)
 
-        self.t_trans2 = SDFM(64,32)
-        self.t_trans1 = SDFM(32,64)
+        self.t_trans2 = MSFHFM_S(64,32)
+        # self.t_trans1 = SDFM(32,64)
         self.t_trans4 = SFFM(160, 64)
-        self.t_trans8 = SFFM(256, 64)
+        # self.t_trans8 = SFFM(256, 64)
         self.upconv16 = BasicConv2d(64, 64, kernel_size=3, stride=1, padding=1)
         self.upconv8 = BasicConv2d(64, 64, kernel_size=3, stride=1, padding=1)
         self.upconv4 = BasicConv2d(64, 64, kernel_size=3, stride=1, padding=1)
@@ -96,7 +96,7 @@ class MHKDF_S(nn.Module):
 
 
 
-        self.fdm = FDM()
+        self.fdm = Decoder()
 
 
 
