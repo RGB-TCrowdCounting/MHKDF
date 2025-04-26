@@ -18,7 +18,25 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
+class MSIM_S(nn.Module):
+    def __init__(self, in_channel, out_channel):
+        super(EDFM, self).__init__()
+        self.one = Tdc3x3_1(in_channel, out_channel)
+        self.two = Tdc3x3_3(in_channel, out_channel)
+        self.three = Tdc3x3_5(in_channel, out_channel)
+        self.four = Tdc3x3_8(in_channel,out_channel)
+        self.fusion = BasicConv2d(out_channel , out_channel, 1)
+        # self.ms = BasicConv2d(in_channel, out_channel, 1)
+        self.fusion1 = BasicConv2d(out_channel*7, out_channel, 1)
+        self.ODC = BasicODConv2d(out_channel , out_channel, kernel_size=1)
+        self.dcc = BasicConv2d(out_channel+1, out_channel, 1)
+        self.uc = BasicConv2d(1, out_channel, 1)
+        self.sigmoid = nn.Sigmoid()
+        self.Graph = Graph_Attention_Union(out_channel, out_channel)
 
+    def forward(self, rgb, rgb_aux):
+        out=rgb_aux
+        return out
 class Enhanced_P(nn.Module):
     def __init__(self, scale_factor,inc,outc):
         super(Enhanced_P, self).__init__()
@@ -93,9 +111,9 @@ class DenseLayer2(nn.Module):
         feats = torch.cat((in_feat, feats), dim=1)
         return self.fuse(feats)
 
-class MSFHFM-T(nn.Module):
+class MSFHFM_T(nn.Module):
     def __init__(self, in_C, out_C):
-        super(MSFHFM-T, self).__init__()
+        super(MSFHFM_T, self).__init__()
         down_factor = in_C // out_C
 
         self.DWT = DTCWTForward(J=1, biort='near_sym_b', qshift='qshift_b')
@@ -137,9 +155,9 @@ class MSFHFM-T(nn.Module):
 
         return feat
 
-class MSFHFM-S(nn.Module):
+class MSFHFM_S(nn.Module):
     def __init__(self, in_C, out_C):
-        super(MSFHFM-S, self).__init__()
+        super(MSFHFM_S, self).__init__()
         down_factor = in_C//out_C
 
         self.DWT = DTCWTForward(J=1, biort='near_sym_b', qshift='qshift_b')
