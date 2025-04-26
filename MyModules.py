@@ -325,7 +325,7 @@ class MSIM_T(nn.Module):
         self.dcc = BasicConv2d(out_channel + 1, out_channel, 1)
         self.uc = BasicConv2d(1, out_channel, 1)
         self.sigmoid = nn.Sigmoid()
-        self.Graph = Graph_Attention_Union(out_channel, out_channel)
+        self.correlation = correlation(out_channel, out_channel)
 
     def forward(self, rgb, rgb_aux):
         x1, x2 = self.one(rgb_aux)
@@ -348,9 +348,9 @@ class MSIM_T(nn.Module):
         x2_1 = x2 - x4
         x4_1 = x4 - x6
         x6_1 = x6 - x7
-        x2_1 = self.Graph(x2, x4) + x2_1
-        x4_1 = self.Graph(x4, x6) + x4_1
-        x6_1 = self.Graph(x6, x7) + x6_1
+        x2_1 = self.correlation(x2, x4) + x2_1
+        x4_1 = self.correlation(x4, x6) + x4_1
+        x6_1 = self.correlation(x6, x7) + x6_1
         out = self.fusion1(torch.cat([x2, x4, x6, x7, x2_1, x4_1, x6_1], dim=1)) + xxod
         out = self.fusion(torch.abs(out - rgb))
         return out
@@ -456,9 +456,9 @@ class Decoder(nn.Module):
 
         return torch.abs(out_data)
 
-class Graph_Attention_Union(nn.Module):
+class correlation(nn.Module):
     def __init__(self, in_channel, out_channel):
-        super(Graph_Attention_Union, self).__init__()
+        super(correlation, self).__init__()
 
         # search region nodes linear transformation
         self.support = nn.Conv2d(in_channel, in_channel, 1, 1, bias=False)
