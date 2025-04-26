@@ -20,19 +20,7 @@ warnings.filterwarnings("ignore")
 
 class MSIM_S(nn.Module):
     def __init__(self, in_channel, out_channel):
-        super(EDFM, self).__init__()
-        self.one = Tdc3x3_1(in_channel, out_channel)
-        self.two = Tdc3x3_3(in_channel, out_channel)
-        self.three = Tdc3x3_5(in_channel, out_channel)
-        self.four = Tdc3x3_8(in_channel,out_channel)
-        self.fusion = BasicConv2d(out_channel , out_channel, 1)
-        # self.ms = BasicConv2d(in_channel, out_channel, 1)
-        self.fusion1 = BasicConv2d(out_channel*7, out_channel, 1)
-        self.ODC = BasicODConv2d(out_channel , out_channel, kernel_size=1)
-        self.dcc = BasicConv2d(out_channel+1, out_channel, 1)
-        self.uc = BasicConv2d(1, out_channel, 1)
-        self.sigmoid = nn.Sigmoid()
-        self.Graph = Graph_Attention_Union(out_channel, out_channel)
+        super(MSIM_S, self).__init__()
 
     def forward(self, rgb, rgb_aux):
         out=rgb_aux
@@ -324,9 +312,9 @@ class Tdc3x3_8(nn.Module):
         x4 = self.conv3(x3)
         return x3,x4
 
-class MSIM(nn.Module):
+class MSIM_T(nn.Module):
     def __init__(self, in_channel, out_channel):
-        super(MSIM, self).__init__()
+        super(MSIM_T, self).__init__()
         self.one = Tdc3x3_1(in_channel, out_channel)
         self.two = Tdc3x3_3(in_channel, out_channel)
         self.three = Tdc3x3_5(in_channel, out_channel)
